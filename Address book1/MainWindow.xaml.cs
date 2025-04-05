@@ -17,22 +17,25 @@ using Microsoft.Web.WebView2.Core;
 using Npgsql;
 using Address_book1.Models;
 
-
 namespace Address_book1
+
 {
 
     public partial class MainWindow : Window
     {
-        private string connectionString = "Host=localhost;Port=5432;Database=AddressbookDB;Username=postgres;Password=QWERTY1221;Client Encoding=UTF8";
+        public MainWindow() : this(null) { }  // Конструктор без параметров вызывает основной
 
-        public MainWindow()
+        private string connectionString = "Host=localhost;Port=5432;Database=AddressbookDB;Username=postgres;Password=QWERTY1221;Client Encoding=UTF8";
+        private UserModel currentUser;
+
+        public MainWindow(UserModel user)
         {
             InitializeComponent();
+            currentUser = user;
+            ApplyRoleRestrictions();
             LoadMap();
             LoadContacts();
-
         }
-
 
         private async void LoadMap()
         {
@@ -49,7 +52,6 @@ namespace Address_book1
             }
         }
 
-        
         private void LoadContacts()
         {
             List<ContactModel> contacts = new List<ContactModel>();
@@ -71,17 +73,14 @@ namespace Address_book1
                             LastName = reader.GetString(2),
                             address = reader.GetString(3),
                             phone_number = reader.GetString(4),
-                            Latitude = reader.GetDouble(5),   
+                            Latitude = reader.GetDouble(5),
                             Longitude = reader.GetDouble(6)
                         });
                     }
                 }
-
-
-                ContactList.ItemsSource = contacts; 
+                ContactList.ItemsSource = contacts;
             }
         }
-
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -99,7 +98,66 @@ namespace Address_book1
             await MapBrowser.ExecuteScriptAsync(script);
         }
 
-            
-    }
+        private void ApplyRoleRestrictions()
+        {
+            if (currentUser == null) return;  // Проверяем, что пользователь авторизован
 
+            if (currentUser.role == "user")
+            {
+                DeleteButton.IsEnabled = false;
+            }
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            string username = UsernameTextBox.Text;
+            string password = PasswordBox.Password;
+
+            // Заглушка для проверки логина и пароля (замени на проверку из БД)
+            if (username == "Lidzhi" && password == "1111")
+            {
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close(); // Закрываем окно авторизации
+            }
+            else
+            {
+                MessageBox.Show("Неверный логин или пароль!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ContactList.SelectedItem is ContactModel selectedContact)
+            {
+                MessageBoxResult result = MessageBox.Show($"Удалить контакт {selectedContact.FirstName} {selectedContact.LastName}?",
+                    "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    using (var conn = new NpgsqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        string query = "DELETE FROM contacts WHERE contact_id = @id";
+
+                        using (var cmd = new NpgsqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@id", selectedContact.contactid);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    LoadContacts(); // Перезагрузка списка после удаления
+                }
+            }
+            else
+            {
+                MessageBox.Show("Выберите контакт для удаления.");
+            }
+        }
+
+
+    }
 }
