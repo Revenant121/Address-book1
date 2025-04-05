@@ -23,7 +23,7 @@ namespace Address_book1
 
     public partial class MainWindow : Window
     {
-        public MainWindow() : this(null) { }  // Конструктор без параметров вызывает основной
+        public MainWindow() : this(null) { }  
 
         private string connectionString = "Host=localhost;Port=5432;Database=AddressbookDB;Username=postgres;Password=QWERTY1221;Client Encoding=UTF8";
         private UserModel currentUser;
@@ -100,7 +100,7 @@ namespace Address_book1
 
         private void ApplyRoleRestrictions()
         {
-            if (currentUser == null) return;  // Проверяем, что пользователь авторизован
+            if (currentUser == null) return;  
 
             if (currentUser.role == "user")
             {
@@ -118,7 +118,7 @@ namespace Address_book1
             {
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
-                this.Close(); // Закрываем окно авторизации
+                this.Close(); 
             }
             else
             {
@@ -149,7 +149,7 @@ namespace Address_book1
                         }
                     }
 
-                    LoadContacts(); // Перезагрузка списка после удаления
+                    LoadContacts(); 
                 }
             }
             else

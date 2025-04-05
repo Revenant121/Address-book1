@@ -57,7 +57,7 @@ namespace Address_book1
                 MainWindow mainWindow = new MainWindow(user);
                 mainWindow.Show();
 
-                this.Close(); // Теперь можно закрывать — это не завершит приложение
+                this.Close(); 
             }
             else
             {
@@ -77,7 +77,7 @@ namespace Address_book1
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("username", username);
-                    cmd.Parameters.AddWithValue("password", password); // Убираем хеширование
+                    cmd.Parameters.AddWithValue("password", password); 
 
                     using (var reader = cmd.ExecuteReader())
                     {
