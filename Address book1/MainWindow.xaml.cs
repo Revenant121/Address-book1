@@ -108,23 +108,7 @@ namespace Address_book1
             }
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
-        {
-            string username = UsernameTextBox.Text;
-            string password = PasswordBox.Password;
-
-            // Заглушка для проверки логина и пароля (замени на проверку из БД)
-            if (username == "Lidzhi" && password == "1111")
-            {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close(); 
-            }
-            else
-            {
-                MessageBox.Show("Неверный логин или пароль!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+      
 
 
 

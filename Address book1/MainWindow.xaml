@@ -19,6 +19,8 @@
                         <StackPanel>
                             <TextBlock Text="{Binding FirstName}" FontWeight="Bold" />
                             <TextBlock Text="{Binding LastName}"/>
+                            <TextBlock Text="{Binding phone_number}"/>
+                            <TextBlock Text="{Binding address}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
