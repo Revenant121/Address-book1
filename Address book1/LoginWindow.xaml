@@ -3,12 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Вход" Height="200" Width="300">
     <Grid>
-        <StackPanel Margin="20">
+        <StackPanel Margin="30">
             <TextBox Name="UsernameBox" Text="Имя пользователя"
                      GotFocus="UsernameBox_GotFocus"
                      LostFocus="UsernameBox_LostFocus"/>
 
-            <PasswordBox Name="PasswordBox"
+            <PasswordBox Name="PasswordBox" 
                          GotFocus="PasswordBox_GotFocus"
                          LostFocus="PasswordBox_LostFocus"/>
 

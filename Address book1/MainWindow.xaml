@@ -8,16 +8,21 @@
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBox Name="UsernameTextBox"/>
 
-        <PasswordBox Name="PasswordBox"/>
+        <StackPanel Grid.Column="0" Margin="10">
+            
+            <TextBox Name="SearchBox" Margin="0,0,0,10" Height="30" 
+                    
+                     Text="Поиск по ключевым словам"
+                     GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" />
 
-        <StackPanel Grid.Column="0">
-            <ListView Name="ContactList" SelectionChanged="ListView_SelectionChanged">
+            
+            <ListView Name="ContactList" Margin="0,0,0,10" Height="400"
+                      SelectionChanged="ListView_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding FirstName}" FontWeight="Bold" />
+                        <StackPanel Margin="5">
+                            <TextBlock Text="{Binding FirstName}" FontWeight="Bold"/>
                             <TextBlock Text="{Binding LastName}"/>
                             <TextBlock Text="{Binding phone_number}"/>
                             <TextBlock Text="{Binding address}"/>
@@ -26,9 +31,11 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Button Name="DeleteButton" Content="Удалить контакт" Click="DeleteButton_Click" Margin="5"/>
+            <Button Name="DeleteButton" Content="Удалить контакт" Click="DeleteButton_Click" Margin="0,0,0,5"/>
+            <Button Name="EditButton" Content="Редактирование контактов" Click="EditButton_Click"/>
         </StackPanel>
 
+        
         <wv2:WebView2 Name="MapBrowser" Grid.Column="1" />
     </Grid>
 </Window>

@@ -16,6 +16,7 @@ using System.IO;
 using Microsoft.Web.WebView2.Core;
 using Npgsql;
 using Address_book1.Models;
+using System.Collections.ObjectModel;
 
 namespace Address_book1
 
@@ -78,9 +79,12 @@ namespace Address_book1
                         });
                     }
                 }
-                ContactList.ItemsSource = contacts;
             }
+
+            allContacts = new ObservableCollection<ContactModel>(contacts); 
+            ContactList.ItemsSource = allContacts;
         }
+
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -108,8 +112,75 @@ namespace Address_book1
             }
         }
 
-      
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ContactList.SelectedItem is ContactModel selectedContact)
+            {
+                var editWindow = new EditContactWindow(selectedContact);
+                if (editWindow.ShowDialog() == true)
+                {
+                    using (var conn = new Npgsql.NpgsqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        string query = @"UPDATE contacts SET 
+                                    ""FirstName"" = @firstName,
+                                    ""LastName"" = @lastName,
+                                    ""address"" = @address,
+                                    ""phone_number"" = @phone
+                                 WHERE contact_id = @id";
 
+                        using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@firstName", selectedContact.FirstName);
+                            cmd.Parameters.AddWithValue("@lastName", selectedContact.LastName);
+                            cmd.Parameters.AddWithValue("@address", selectedContact.address);
+                            cmd.Parameters.AddWithValue("@phone", selectedContact.phone_number);
+                            cmd.Parameters.AddWithValue("@id", selectedContact.contactid);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    LoadContacts(); // Перезагрузить список после редактирования
+                }
+            }
+            else
+            {
+                MessageBox.Show("Выберите контакт для редактирования.");
+            }
+        }
+
+        private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (SearchBox.Text == "Поиск по ключевым словам")
+            {
+                SearchBox.Text = "";
+            }
+        }
+
+        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SearchBox.Text))
+            {
+                SearchBox.Text = "Поиск по ключевым словам";
+            }
+        }
+        private ObservableCollection<ContactModel> allContacts = new ObservableCollection<ContactModel>();
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string keyword = SearchBox.Text.ToLower().Trim();
+
+            var filtered = allContacts.Where(c =>
+                (c.FirstName != null && c.FirstName.ToLower().Contains(keyword)) ||
+                (c.LastName != null && c.LastName.ToLower().Contains(keyword)) ||
+   
+                (c.address != null && c.address.ToLower().Contains(keyword)) ||
+                (c.phone_number != null && c.phone_number.ToLower().Contains(keyword))
+            );
+
+            ContactList.ItemsSource = new ObservableCollection<ContactModel>(filtered);
+        }
 
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
