@@ -7,7 +7,9 @@
 			<TextBox Name="UsernameBox" Margin="0,0,0,10" Text="Имя пользователя"/>
 			<PasswordBox Name="PasswordBox" Margin="0,0,0,10"/>
 			<PasswordBox Name="ConfirmPasswordBox" Margin="0,0,0,10"/>
+			<TextBox  Name="EmailBox"          Text="Email" />
 			<Button Content="Зарегистрироваться" Click="Register_Click"/>
+		
 		</StackPanel>
 	</Grid>
 </Window>

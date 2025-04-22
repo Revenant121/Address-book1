@@ -21,15 +21,20 @@
                       SelectionChanged="ListView_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="5">
-                            <TextBlock Text="{Binding FirstName}" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding LastName}"/>
-                            <TextBlock Text="{Binding phone_number}"/>
-                            <TextBlock Text="{Binding address}"/>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <Image Source="{Binding PhotoPath}" Width="50" Height="50" Margin="5"/>
+                            <StackPanel>
+                                <TextBlock Text="{Binding FirstName}" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding LastName}"/>
+                                <TextBlock Text="{Binding phone_number}"/>
+                                <TextBlock Text="{Binding address}"/>
+                            </StackPanel>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+          
+
 
             <Button Name="DeleteButton" Content="Удалить контакт" Click="DeleteButton_Click" Margin="0,0,0,5"/>
             <Button Name="EditButton" Content="Редактирование контактов" Click="EditButton_Click"/>

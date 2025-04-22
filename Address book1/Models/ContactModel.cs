@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Address_book1.Models
 {
     public class ContactModel
@@ -18,5 +19,12 @@ namespace Address_book1.Models
 
         public double Longitude { get; set; }
 
+        private string _photoPath;
+
+        public string PhotoPath
+        {
+            get => string.IsNullOrEmpty(_photoPath) ? "C:\\Users\\User\\source\\repos\\Address book1\\Address book1\\Images\\DefaultProfile.png" : _photoPath;
+            set => _photoPath = value;
+        }
     }
 }
