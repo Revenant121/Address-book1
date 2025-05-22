@@ -19,6 +19,10 @@ namespace Address_book1.Models
 
         public double Longitude { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+        public string Category { get; set; }
+
+
         private string _photoPath;
 
         public string PhotoPath

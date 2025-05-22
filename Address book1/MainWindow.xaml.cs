@@ -181,6 +181,37 @@ namespace Address_book1
 
             ContactList.ItemsSource = new ObservableCollection<ContactModel>(filtered);
         }
+        private void AddContactButton_Click(object sender, RoutedEventArgs e)
+        {
+            var addWindow = new EditContactWindow(); // окно без параметров — для нового контакта
+            if (addWindow.ShowDialog() == true)
+            {
+                var newContact = addWindow.Contact;
+
+                using (var conn = new NpgsqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = @"INSERT INTO contacts (
+                                contact_id, ""FirstName"", ""LastName"", ""address"", ""phone_number"", ""Latitude"", ""Longitude"")
+                             VALUES (@id, @firstName, @lastName, @address, @phone, @lat, @lon)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", newContact.contactid);
+                        cmd.Parameters.AddWithValue("@firstName", newContact.FirstName);
+                        cmd.Parameters.AddWithValue("@lastName", newContact.LastName);
+                        cmd.Parameters.AddWithValue("@address", newContact.address);
+                        cmd.Parameters.AddWithValue("@phone", newContact.phone_number);
+                        cmd.Parameters.AddWithValue("@lat", newContact.Latitude);
+                        cmd.Parameters.AddWithValue("@lon", newContact.Longitude);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                LoadContacts(); // Обновить список контактов
+            }
+        }
 
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)

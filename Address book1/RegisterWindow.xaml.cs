@@ -96,7 +96,7 @@ namespace Address_book1
             var mailMessage = new MailMessage(fromEmail, toEmail)
             {
                 Subject = "Код подтверждения",
-                Body = $"Вот твой код подтверждения епта: {code}",
+                Body = $"Вот твой код подтверждения: {code}",
                 IsBodyHtml = false
             };
 

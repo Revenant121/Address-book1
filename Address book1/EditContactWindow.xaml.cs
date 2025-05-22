@@ -12,6 +12,10 @@ namespace Address_book1
     {
         public ContactModel Contact { get; private set; }
         private string selectedPhotoPath;
+        public EditContactWindow() : this(new ContactModel { contactid = Guid.NewGuid() })
+        {
+            // Этот конструктор используется для добавления нового контакта
+        }
 
         public EditContactWindow(ContactModel contact)
         {
@@ -22,6 +26,9 @@ namespace Address_book1
             LastNameBox.Text = contact.LastName;
             PhoneBox.Text = contact.phone_number;
             AddressBox.Text = contact.address;
+            CategoryBox.Text = contact.Category;
+            contact.Category = CategoryBox.Text;
+
 
             if (!string.IsNullOrEmpty(contact.PhotoPath) && File.Exists(contact.PhotoPath))
             {

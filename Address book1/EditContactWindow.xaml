@@ -11,6 +11,8 @@
             <TextBox x:Name="LastNameBox" Margin="0,0,0,10" Text="Фамилия"/>
             <TextBox x:Name="PhoneBox" Margin="0,0,0,10" Text="Телефон"/>
             <TextBox x:Name="AddressBox" Margin="0,0,0,10" Text="Адрес"/>
+            <TextBox x:Name="CategoryBox" Margin="0,0,0,10" Text="Категория"/>
+
 
             <Button Content="Сохранить" Click="Save_Click"/>
         </StackPanel>
