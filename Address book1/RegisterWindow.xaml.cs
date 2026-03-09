@@ -83,8 +83,8 @@ namespace Address_book1
 
         private void SendVerificationCode(string toEmail, string code)
         {
-            string fromEmail = "revenantrevenant6@gmail.com";       
-            string fromPassword = "zfam kwkl tslc bxlb\r\n";  
+            string fromEmail = "твой емаил";       
+            string fromPassword = "пароль для приложений";  
 
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {
